@@ -13,6 +13,7 @@
 		BD1B01821E04283A00D60790 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1B01801E04283A00D60790 /* Main.storyboard */; };
 		BD1B01841E04283A00D60790 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD1B01831E04283A00D60790 /* Assets.xcassets */; };
 		BD1B01871E04283A00D60790 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1B01851E04283A00D60790 /* LaunchScreen.storyboard */; };
+		BD1B01911E042B0900D60790 /* AYVariableFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1B01901E042B0900D60790 /* AYVariableFlowLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		BD1B01831E04283A00D60790 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD1B01861E04283A00D60790 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BD1B01881E04283A00D60790 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD1B018F1E042B0900D60790 /* AYVariableFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AYVariableFlowLayout.h; sourceTree = "<group>"; };
+		BD1B01901E042B0900D60790 /* AYVariableFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AYVariableFlowLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,7 @@
 		BD1B01761E04283A00D60790 /* AYVariableFlowLayout */ = {
 			isa = PBXGroup;
 			children = (
+				BD1B018E1E042AE800D60790 /* Layout */,
 				BD1B017A1E04283A00D60790 /* AppDelegate.h */,
 				BD1B017B1E04283A00D60790 /* AppDelegate.m */,
 				BD1B017D1E04283A00D60790 /* ViewController.h */,
@@ -77,6 +81,15 @@
 				BD1B01781E04283A00D60790 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BD1B018E1E042AE800D60790 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				BD1B018F1E042B0900D60790 /* AYVariableFlowLayout.h */,
+				BD1B01901E042B0900D60790 /* AYVariableFlowLayout.m */,
+			);
+			name = Layout;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +167,7 @@
 				BD1B017F1E04283A00D60790 /* ViewController.m in Sources */,
 				BD1B017C1E04283A00D60790 /* AppDelegate.m in Sources */,
 				BD1B01791E04283A00D60790 /* main.m in Sources */,
+				BD1B01911E042B0900D60790 /* AYVariableFlowLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +326,7 @@
 				BD1B018D1E04283A00D60790 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
