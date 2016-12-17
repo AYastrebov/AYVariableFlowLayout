@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BCF93B161E056CFD005D03A9 /* HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF93B151E056CFD005D03A9 /* HeaderView.m */; };
+		BCF93B191E056D0F005D03A9 /* FooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF93B181E056D0F005D03A9 /* FooterView.m */; };
 		BD1B01791E04283A00D60790 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1B01781E04283A00D60790 /* main.m */; };
 		BD1B017C1E04283A00D60790 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1B017B1E04283A00D60790 /* AppDelegate.m */; };
 		BD1B017F1E04283A00D60790 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1B017E1E04283A00D60790 /* ViewController.m */; };
@@ -16,6 +18,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BCF93B141E056CFD005D03A9 /* HeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderView.h; sourceTree = "<group>"; };
+		BCF93B151E056CFD005D03A9 /* HeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderView.m; sourceTree = "<group>"; };
+		BCF93B171E056D0F005D03A9 /* FooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterView.h; sourceTree = "<group>"; };
+		BCF93B181E056D0F005D03A9 /* FooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterView.m; sourceTree = "<group>"; };
 		BD1B01741E04283A00D60790 /* AYVariableFlowLayout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AYVariableFlowLayout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD1B01781E04283A00D60790 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BD1B017A1E04283A00D60790 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -39,6 +45,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BCF93B121E056CB7005D03A9 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Layout;
+			sourceTree = "<group>";
+		};
+		BCF93B131E056CCA005D03A9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BCF93B141E056CFD005D03A9 /* HeaderView.h */,
+				BCF93B151E056CFD005D03A9 /* HeaderView.m */,
+				BCF93B171E056D0F005D03A9 /* FooterView.h */,
+				BCF93B181E056D0F005D03A9 /* FooterView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		BD1B016B1E04283A00D60790 = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +82,8 @@
 		BD1B01761E04283A00D60790 /* AYVariableFlowLayout */ = {
 			isa = PBXGroup;
 			children = (
+				BCF93B131E056CCA005D03A9 /* Views */,
+				BCF93B121E056CB7005D03A9 /* Layout */,
 				BD1B017A1E04283A00D60790 /* AppDelegate.h */,
 				BD1B017B1E04283A00D60790 /* AppDelegate.m */,
 				BD1B017D1E04283A00D60790 /* ViewController.h */,
@@ -151,9 +177,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCF93B191E056D0F005D03A9 /* FooterView.m in Sources */,
 				BD1B017F1E04283A00D60790 /* ViewController.m in Sources */,
 				BD1B017C1E04283A00D60790 /* AppDelegate.m in Sources */,
 				BD1B01791E04283A00D60790 /* main.m in Sources */,
+				BCF93B161E056CFD005D03A9 /* HeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +340,7 @@
 				BD1B018D1E04283A00D60790 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
