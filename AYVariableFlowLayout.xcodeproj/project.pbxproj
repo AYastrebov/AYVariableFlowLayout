@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BCF93B161E056CFD005D03A9 /* HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF93B151E056CFD005D03A9 /* HeaderView.m */; };
 		BCF93B191E056D0F005D03A9 /* FooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF93B181E056D0F005D03A9 /* FooterView.m */; };
+		BCF93B1C1E0574FD005D03A9 /* AYVariableFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF93B1B1E0574FD005D03A9 /* AYVariableFlowLayout.m */; };
 		BD1B01791E04283A00D60790 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1B01781E04283A00D60790 /* main.m */; };
 		BD1B017C1E04283A00D60790 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1B017B1E04283A00D60790 /* AppDelegate.m */; };
 		BD1B017F1E04283A00D60790 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1B017E1E04283A00D60790 /* ViewController.m */; };
@@ -22,6 +23,8 @@
 		BCF93B151E056CFD005D03A9 /* HeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderView.m; sourceTree = "<group>"; };
 		BCF93B171E056D0F005D03A9 /* FooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterView.h; sourceTree = "<group>"; };
 		BCF93B181E056D0F005D03A9 /* FooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterView.m; sourceTree = "<group>"; };
+		BCF93B1A1E0574FD005D03A9 /* AYVariableFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AYVariableFlowLayout.h; sourceTree = "<group>"; };
+		BCF93B1B1E0574FD005D03A9 /* AYVariableFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AYVariableFlowLayout.m; sourceTree = "<group>"; };
 		BD1B01741E04283A00D60790 /* AYVariableFlowLayout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AYVariableFlowLayout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD1B01781E04283A00D60790 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BD1B017A1E04283A00D60790 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -48,19 +51,23 @@
 		BCF93B121E056CB7005D03A9 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
+				BCF93B1A1E0574FD005D03A9 /* AYVariableFlowLayout.h */,
+				BCF93B1B1E0574FD005D03A9 /* AYVariableFlowLayout.m */,
 			);
 			name = Layout;
+			path = Layout;
 			sourceTree = "<group>";
 		};
 		BCF93B131E056CCA005D03A9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				BCF93B141E056CFD005D03A9 /* HeaderView.h */,
-				BCF93B151E056CFD005D03A9 /* HeaderView.m */,
 				BCF93B171E056D0F005D03A9 /* FooterView.h */,
 				BCF93B181E056D0F005D03A9 /* FooterView.m */,
+				BCF93B141E056CFD005D03A9 /* HeaderView.h */,
+				BCF93B151E056CFD005D03A9 /* HeaderView.m */,
 			);
 			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		BD1B016B1E04283A00D60790 = {
@@ -82,17 +89,17 @@
 		BD1B01761E04283A00D60790 /* AYVariableFlowLayout */ = {
 			isa = PBXGroup;
 			children = (
-				BCF93B131E056CCA005D03A9 /* Views */,
 				BCF93B121E056CB7005D03A9 /* Layout */,
+				BD1B01771E04283A00D60790 /* Supporting Files */,
+				BCF93B131E056CCA005D03A9 /* Views */,
 				BD1B017A1E04283A00D60790 /* AppDelegate.h */,
 				BD1B017B1E04283A00D60790 /* AppDelegate.m */,
+				BD1B01831E04283A00D60790 /* Assets.xcassets */,
+				BD1B01881E04283A00D60790 /* Info.plist */,
+				BD1B01851E04283A00D60790 /* LaunchScreen.storyboard */,
+				BD1B01801E04283A00D60790 /* Main.storyboard */,
 				BD1B017D1E04283A00D60790 /* ViewController.h */,
 				BD1B017E1E04283A00D60790 /* ViewController.m */,
-				BD1B01801E04283A00D60790 /* Main.storyboard */,
-				BD1B01831E04283A00D60790 /* Assets.xcassets */,
-				BD1B01851E04283A00D60790 /* LaunchScreen.storyboard */,
-				BD1B01881E04283A00D60790 /* Info.plist */,
-				BD1B01771E04283A00D60790 /* Supporting Files */,
 			);
 			path = AYVariableFlowLayout;
 			sourceTree = "<group>";
@@ -103,6 +110,7 @@
 				BD1B01781E04283A00D60790 /* main.m */,
 			);
 			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -182,6 +190,7 @@
 				BD1B017C1E04283A00D60790 /* AppDelegate.m in Sources */,
 				BD1B01791E04283A00D60790 /* main.m in Sources */,
 				BCF93B161E056CFD005D03A9 /* HeaderView.m in Sources */,
+				BCF93B1C1E0574FD005D03A9 /* AYVariableFlowLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +203,7 @@
 				BD1B01811E04283A00D60790 /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		BD1B01851E04283A00D60790 /* LaunchScreen.storyboard */ = {
@@ -202,6 +212,7 @@
 				BD1B01861E04283A00D60790 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
