@@ -75,6 +75,8 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     
     cell.backgroundColor = [UIColor colorWithRed:((double)arc4random() / ARC4RANDOM_MAX) green:((double)arc4random() / ARC4RANDOM_MAX) blue:((double)arc4random() / ARC4RANDOM_MAX) alpha:1.0f];
+    UILabel *label = [cell viewWithTag:1];
+    label.text = [NSString stringWithFormat:@"%ld", (long)indexPath.row];
     return cell;
 }
 
@@ -108,8 +110,8 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        return CGSizeMake(100, 100);
+    if (indexPath.row == 16) {
+        return CGSizeMake(110, 110);
     }
     return CGSizeMake(50, 50);
 }

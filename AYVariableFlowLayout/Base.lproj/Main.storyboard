@@ -37,7 +37,21 @@
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q20-n5-HmC">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="q20-n5-HmC" secondAttribute="trailing" id="7fP-Vv-fO7"/>
+                                            <constraint firstAttribute="bottom" secondItem="q20-n5-HmC" secondAttribute="bottom" id="BEY-38-ihf"/>
+                                            <constraint firstItem="q20-n5-HmC" firstAttribute="top" secondItem="7df-sg-3Ee" secondAttribute="top" id="RDP-Dh-1aX"/>
+                                            <constraint firstItem="q20-n5-HmC" firstAttribute="leading" secondItem="7df-sg-3Ee" secondAttribute="leading" id="six-5n-DOU"/>
+                                        </constraints>
                                     </collectionViewCell>
                                 </cells>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="header" id="fwv-Md-H3G">
