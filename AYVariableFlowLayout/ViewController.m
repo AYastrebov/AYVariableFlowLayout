@@ -9,11 +9,15 @@
 #import "ViewController.h"
 #import "HeaderView.h"
 #import "FooterView.h"
+#import "AYVariableFlowLayout.h"
 
 #define ARC4RANDOM_MAX      0x100000000
 
-@interface ViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface ViewController () <UICollectionViewDataSource, UICollectionViewDelegate, AYVariableDelegateFlowLayout, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+
+@property (nonatomic, strong) AYVariableFlowLayout *variableLayout;
+@property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 @end
 
 @implementation ViewController
@@ -21,14 +25,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.collectionView registerClass:HeaderView.class
-            forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                   withReuseIdentifier:@"header"];
+    UICollectionViewLayout *currentLayout = self.collectionView.collectionViewLayout;
     
-    [self.collectionView registerClass:FooterView.class
-            forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                   withReuseIdentifier:@"footer"];
-    // Do any additional setup after loading the view, typically from a nib.
+    if ([currentLayout isKindOfClass:AYVariableFlowLayout.class]) {
+        self.variableLayout = (AYVariableFlowLayout *)currentLayout;
+        self.flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    } else if ([currentLayout isKindOfClass:UICollectionViewFlowLayout.class]) {
+        self.flowLayout = (UICollectionViewFlowLayout *)currentLayout;
+        self.variableLayout = [[AYVariableFlowLayout alloc] init];
+    }
 }
 
 
@@ -37,10 +42,34 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)segmentValueChanged:(UISegmentedControl *)sender {
+    
+    [self.collectionView reloadData];
+    [self.collectionView performBatchUpdates:^{
+        [self.collectionView.collectionViewLayout invalidateLayout];
+        
+        switch (sender.selectedSegmentIndex) {
+                // Custom layout
+            case 0:
+                [self.collectionView setCollectionViewLayout:self.variableLayout animated:YES];
+                break;
+                
+                // Flow layout
+            default:
+                [self.collectionView setCollectionViewLayout:self.flowLayout animated:YES];
+                break;
+        }
+    } completion:nil];
+}
+
+- (IBAction)reloadButtonPressed:(id)sender {
+    [self.collectionView reloadData];
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 30;
+    return 28;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -75,13 +104,37 @@
     return reusableView;
 }
 
-#pragma mark - UICollectionViewDelegateFlowLayout
+#pragma mark - AYVariableDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(100, 100);
+    return CGSizeMake(50, 50);
 }
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout heightForHeaderInSection:(NSInteger)section {
+    return 44;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout heightForFooterInSection:(NSInteger)section {
+    return 44;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout verticalPaddingForSectionAtIndex:(NSInteger)section {
+    return 10;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout horizontalPaddingForSectionAtIndex:(NSInteger)section {
+    return 10;
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+//- (CGSize)collectionView:(UICollectionView *)collectionView
+//                  layout:(UICollectionViewLayout*)collectionViewLayout
+//  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+//    return CGSizeMake(100, 100);
+//}
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout*)collectionViewLayout
