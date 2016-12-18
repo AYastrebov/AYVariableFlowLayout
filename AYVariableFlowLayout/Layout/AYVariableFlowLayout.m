@@ -297,6 +297,8 @@ static const NSInteger unionSize = 20;
     return NO;
 }
 
+#pragma mark - Private
+
 - (NSArray<AYVariableLayoutAttributes *> *)distributeItems:(NSArray<AYVariableLayoutAttributes *> *)itemAttributes
                                                     offset:(CGFloat)offset
                                                        row:(NSUInteger)row {
