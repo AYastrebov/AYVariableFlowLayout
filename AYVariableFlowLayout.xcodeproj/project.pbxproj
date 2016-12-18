@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BC610DCD1E06126300DB0BE4 /* AYVariableLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = BC610DCC1E06126300DB0BE4 /* AYVariableLayoutAttributes.m */; };
 		BCF93B161E056CFD005D03A9 /* HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF93B151E056CFD005D03A9 /* HeaderView.m */; };
 		BCF93B191E056D0F005D03A9 /* FooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF93B181E056D0F005D03A9 /* FooterView.m */; };
 		BCF93B1C1E0574FD005D03A9 /* AYVariableFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF93B1B1E0574FD005D03A9 /* AYVariableFlowLayout.m */; };
@@ -20,8 +19,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BC610DCB1E06126300DB0BE4 /* AYVariableLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AYVariableLayoutAttributes.h; sourceTree = "<group>"; };
-		BC610DCC1E06126300DB0BE4 /* AYVariableLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AYVariableLayoutAttributes.m; sourceTree = "<group>"; };
 		BCF93B141E056CFD005D03A9 /* HeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderView.h; sourceTree = "<group>"; };
 		BCF93B151E056CFD005D03A9 /* HeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderView.m; sourceTree = "<group>"; };
 		BCF93B171E056D0F005D03A9 /* FooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterView.h; sourceTree = "<group>"; };
@@ -56,8 +53,6 @@
 			children = (
 				BCF93B1A1E0574FD005D03A9 /* AYVariableFlowLayout.h */,
 				BCF93B1B1E0574FD005D03A9 /* AYVariableFlowLayout.m */,
-				BC610DCB1E06126300DB0BE4 /* AYVariableLayoutAttributes.h */,
-				BC610DCC1E06126300DB0BE4 /* AYVariableLayoutAttributes.m */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -192,7 +187,6 @@
 				BD1B017C1E04283A00D60790 /* AppDelegate.m in Sources */,
 				BD1B01791E04283A00D60790 /* main.m in Sources */,
 				BCF93B161E056CFD005D03A9 /* HeaderView.m in Sources */,
-				BC610DCD1E06126300DB0BE4 /* AYVariableLayoutAttributes.m in Sources */,
 				BCF93B1C1E0574FD005D03A9 /* AYVariableFlowLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

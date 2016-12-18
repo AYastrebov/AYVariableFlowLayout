@@ -16,6 +16,8 @@
 @interface ViewController () <UICollectionViewDataSource, UICollectionViewDelegate, AYVariableDelegateFlowLayout, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
+@property (nonatomic, strong) NSMutableArray<NSValue *> *sizes;
+
 @property (nonatomic, strong) AYVariableFlowLayout *variableLayout;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 @end
@@ -24,6 +26,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.sizes = [NSMutableArray new];
+    
+    for (NSUInteger i = 0; i < 32; i++) {
+        CGSize size = CGSizeMake(50, 50);
+        if (i == 4) {
+            size = CGSizeMake(110, 110);
+        }
+        
+        [self.sizes addObject:[NSValue valueWithCGSize:size]];
+    }
     
     UICollectionViewLayout *currentLayout = self.collectionView.collectionViewLayout;
     
@@ -68,7 +81,7 @@
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 28;
+    return self.sizes.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -110,10 +123,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 16) {
-        return CGSizeMake(110, 110);
-    }
-    return CGSizeMake(50, 50);
+    return self.sizes[indexPath.row].CGSizeValue;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
@@ -122,21 +132,18 @@
     return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout heightForHeaderInSection:(NSInteger)section {
-    return 44;
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout*)collectionViewLayout
+referenceSizeForHeaderInSection:(NSInteger)section {
+    return CGSizeMake(collectionView.bounds.size.width, 44);
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout heightForFooterInSection:(NSInteger)section {
-    return 44;
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout*)collectionViewLayout
+referenceSizeForFooterInSection:(NSInteger)section {
+    return CGSizeMake(collectionView.bounds.size.width, 44);
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout verticalPaddingForSectionAtIndex:(NSInteger)section {
-    return 10;
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout horizontalPaddingForSectionAtIndex:(NSInteger)section {
-    return 10;
-}
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
@@ -164,16 +171,16 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
     return 10;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(collectionView.bounds.size.width, 44);
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForFooterInSection:(NSInteger)section {
-    return CGSizeMake(collectionView.bounds.size.width, 44);
-}
+//- (CGSize)collectionView:(UICollectionView *)collectionView
+//                  layout:(UICollectionViewLayout*)collectionViewLayout
+//referenceSizeForHeaderInSection:(NSInteger)section {
+//    return CGSizeMake(collectionView.bounds.size.width, 44);
+//}
+//
+//- (CGSize)collectionView:(UICollectionView *)collectionView
+//                  layout:(UICollectionViewLayout*)collectionViewLayout
+//referenceSizeForFooterInSection:(NSInteger)section {
+//    return CGSizeMake(collectionView.bounds.size.width, 44);
+//}
 
 @end

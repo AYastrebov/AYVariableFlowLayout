@@ -7,7 +7,16 @@
 //
 
 #import "AYVariableFlowLayout.h"
-#import "AYVariableLayoutAttributes.h"
+
+@interface AYVariableLayoutAttributes : UICollectionViewLayoutAttributes
+@property (nonatomic) CGFloat height;
+@property (nonatomic) CGFloat maxX;
+@property (nonatomic) NSUInteger row;
+@property (nonatomic) NSUInteger rowIndex;
+@end
+
+@implementation AYVariableLayoutAttributes
+@end
 
 @interface AYVariableFlowLayout ()
 @property (nonatomic, weak) id<AYVariableDelegateFlowLayout> delegate;
@@ -71,32 +80,19 @@ static const NSInteger unionSize = 20;
         
         for (NSUInteger section = 0; section < numberOfSections; section++) {
             
-            CGFloat verticalPadding =
-            [self.delegate collectionView:self.collectionView
-                                   layout:self
-         verticalPaddingForSectionAtIndex:section];
-            
-            CGFloat horizontalPadding =
-            [self.delegate collectionView:self.collectionView
-                                   layout:self
-       horizontalPaddingForSectionAtIndex:section];
-            
-            UIEdgeInsets sectionInsets =
-            [self.delegate collectionView:self.collectionView
-                                   layout:self
-                   insetForSectionAtIndex:section];
-            
-            CGFloat headerHeight =
-            [self.delegate collectionView:self.collectionView
-                                   layout:self
-                 heightForHeaderInSection:section];
+            CGFloat verticalPadding = [self lineSpacingForSection:section];
+            CGFloat horizontalPadding = [self interItemSpacingForSection:section];
+            UIEdgeInsets sectionInsets = [self insetForSection:section];
+            CGSize headerSize = [self sizeForHeaderInSection:section];
+            CGSize footerSize = [self sizeForFooterInSection:section];
             
             // Header
-            if (headerHeight > 0) {
-                UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                                                                              withIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
-                attributes.frame = CGRectMake(0, yOffset, cvWidth, headerHeight);
-                yOffset += headerHeight;
+            if (!CGSizeEqualToSize(CGSizeZero, headerSize)) {
+                UICollectionViewLayoutAttributes *attributes =
+                [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                               withIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
+                attributes.frame = CGRectMake(0, yOffset, headerSize.width, headerSize.height);
+                yOffset += headerSize.height;
                 yOffset += sectionInsets.top;
                 
                 [self.allItemAttributes addObject:attributes];
@@ -107,7 +103,9 @@ static const NSInteger unionSize = 20;
             
             __block NSUInteger row = 0;
             __block NSUInteger rowIndex = 0;
-            CGFloat itemMaxHeight = 0;
+            __block CGFloat itemMaxHeight = 0;
+            
+            NSUInteger totalRowsInSection = 0;
             
             // Items
             for (NSUInteger item = 0; item < items; item++) {
@@ -118,68 +116,79 @@ static const NSInteger unionSize = 20;
                 
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
                 
-                CGSize size =
-                [self.delegate collectionView:self.collectionView
-                                       layout:self
-                       sizeForItemAtIndexPath:indexPath];
-                
+                CGSize size = [self sizeForIndexPath:indexPath];
+                                
                 if (xOffset + size.width > cvWidth - sectionInsets.right) {
                     xOffset = sectionInsets.left;
                     row++;
+                    itemMaxHeight = 0;
                     rowIndex = 0;
                     
-                    if (item != 0) {
-                        
-                        NSUInteger previousRowFirstItemIndex =
-                        [itemAttributes indexOfObjectPassingTest:^BOOL(AYVariableLayoutAttributes *obj, NSUInteger idx, BOOL *stop) {
-                            return (obj.row == (row - 1)) && obj.rowIndex == 0;
+                    NSArray<AYVariableLayoutAttributes *> *previousRowItems = [self itemsForRow:row - 1 allItems:itemAttributes];
+                    
+                    CGFloat maxX = [[previousRowItems valueForKeyPath:@"@max.maxX"] floatValue];
+                    CGFloat diff = cvWidth - sectionInsets.right - maxX;
+                    
+                    CGFloat extraMarginPerItem = diff / (previousRowItems.count - 1);
+                    
+                    if (extraMarginPerItem > 0) {
+                        [previousRowItems enumerateObjectsUsingBlock:^(AYVariableLayoutAttributes * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                            if (idx > 0) {
+                                CGRect frame = obj.frame;
+                                frame.origin.x += extraMarginPerItem * idx;
+                                obj.frame = frame;
+                                obj.maxX = CGRectGetMaxX(frame);
+                            }
                         }];
-                        
-                        yOffset += itemAttributes[previousRowFirstItemIndex].size.height;
-                        yOffset += verticalPadding;
                     }
+                    
+                    CGFloat minHeight = [[previousRowItems valueForKeyPath:@"@min.height"] floatValue];
+                    
+                    yOffset += minHeight;
+                    yOffset += verticalPadding;
                 }
                 
                 __block CGRect frame = CGRectMake(xOffset, yOffset, size.width, size.height);
                 
-                if (row > 0) {
-                    NSIndexSet *previousRowIndexes = [itemAttributes indexesOfObjectsPassingTest:^BOOL(AYVariableLayoutAttributes *obj, NSUInteger idx, BOOL *stop) {
-                        return obj.row == (row - 1);
-                    }];
-                    
-                    [itemAttributes enumerateObjectsAtIndexes:previousRowIndexes
-                                                      options:NSEnumerationConcurrent
-                                                   usingBlock:^(AYVariableLayoutAttributes *obj, NSUInteger idx, BOOL *stop) {
-                                                       if (CGRectIntersectsRect(obj.frame, frame)) {
-                                                           
-                                                           // First, try to move it right
-                                                           CGFloat newOffset = CGRectGetMaxX(obj.frame);
-                                                           newOffset += horizontalPadding;
-                                                           
-                                                           if (xOffset + size.width > cvWidth - sectionInsets.right) {
-                                                               // Can't move right, let's go down
-                                                               xOffset = sectionInsets.left;
-                                                               row++;
-                                                               rowIndex = 0;
-                                                               
-                                                               yOffset += size.height;
-                                                               yOffset += verticalPadding;
-                                                               
-                                                           } else {
-                                                               xOffset = newOffset;
-                                                               frame.origin.x = newOffset;
-                                                           }
-                                                       }
-                                                   }];
-                }
+                NSArray<AYVariableLayoutAttributes *> *previousRowItems = [self itemsForRow:row - 1 allItems:itemAttributes];
+                
+                [previousRowItems enumerateObjectsUsingBlock:^(AYVariableLayoutAttributes *obj, NSUInteger idx, BOOL *stop) {
+                    if (CGRectIntersectsRect(obj.frame, frame)) {
+                        
+                        NSLog(@"Item index: %lu", (unsigned long)item);
+                        // First, try to move it right
+                        CGFloat newOffset = CGRectGetMaxX(obj.frame);
+                        newOffset += horizontalPadding;
+                        
+                        if (newOffset + size.width > cvWidth - sectionInsets.right) {
+                            // Can't move right, let's go down
+                            xOffset = sectionInsets.left;
+                            row++;
+                            itemMaxHeight = 0;
+                            rowIndex = 0;
+                            
+                            yOffset += size.height;
+                            yOffset += verticalPadding;
+                            
+                        } else {
+                            xOffset = newOffset;
+                        }
+                        
+                        frame.origin.x = xOffset;
+                        frame.origin.y = yOffset;
+                    }
+                }];
                 
                 AYVariableLayoutAttributes *attributes = [AYVariableLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
                 attributes.frame = frame;
+                attributes.maxX = CGRectGetMaxX(frame);
+                attributes.height = CGRectGetHeight(frame);
                 attributes.row = row;
                 attributes.rowIndex = rowIndex;
                 
                 xOffset += size.width;
                 xOffset += horizontalPadding;
+                rowIndex++;
                 
                 [itemAttributes addObject:attributes];
                 [self.allItemAttributes addObject:attributes];
@@ -191,23 +200,19 @@ static const NSInteger unionSize = 20;
                 // if last object in section
                 if (item == items - 1) {
                     yOffset += itemMaxHeight;
+                    totalRowsInSection = row + 1;
                 }
             }
             
             [self.sectionItemAttributes addObject:itemAttributes.copy];
             
             // Footer
-            CGFloat footerHeight =
-            [self.delegate collectionView:self.collectionView
-                                   layout:self
-                 heightForFooterInSection:section];
-            
-            if (footerHeight > 0) {
+            if (!CGSizeEqualToSize(CGSizeZero, footerSize)) {
                 UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter
                                                                                                                               withIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
                 yOffset += sectionInsets.bottom;
-                attributes.frame = CGRectMake(0, yOffset, cvWidth, footerHeight);
-                yOffset += footerHeight;
+                attributes.frame = CGRectMake(0, yOffset, footerSize.width, footerSize.height);
+                yOffset += footerSize.height;
                 
                 [self.allItemAttributes addObject:attributes];
             }
@@ -306,6 +311,88 @@ static const NSInteger unionSize = 20;
 
 - (id<AYVariableDelegateFlowLayout>)delegate {
     return (id<AYVariableDelegateFlowLayout>)self.collectionView.delegate;
+}
+
+- (NSArray<AYVariableLayoutAttributes *> *)itemsForRow:(NSInteger)row
+                                              allItems:(NSArray<AYVariableLayoutAttributes *> *)itemAttributes {
+    if (row >= 0) {
+        NSIndexSet *indexes = [itemAttributes indexesOfObjectsPassingTest:^BOOL(AYVariableLayoutAttributes *obj, NSUInteger idx, BOOL *stop) {
+            return obj.row == row;
+        }];
+        
+        return [itemAttributes objectsAtIndexes:indexes];
+    }
+    
+    return nil;
+}
+
+- (CGSize)sizeForIndexPath:(NSIndexPath *)indexPath {
+    
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:sizeForItemAtIndexPath:)]) {
+        return
+        [self.delegate collectionView:self.collectionView
+                               layout:self
+               sizeForItemAtIndexPath:indexPath];
+    } else {
+        return self.itemSize;
+    }
+}
+
+- (CGSize)sizeForFooterInSection:(NSUInteger)section {
+    
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]) {
+        return
+        [self.delegate collectionView:self.collectionView
+                               layout:self
+      referenceSizeForFooterInSection:section];
+    } else {
+        return self.footerReferenceSize;
+    }
+}
+
+- (CGSize)sizeForHeaderInSection:(NSUInteger)section {
+    
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]) {
+        return
+        [self.delegate collectionView:self.collectionView
+                               layout:self
+      referenceSizeForHeaderInSection:section];
+    } else {
+        return self.headerReferenceSize;
+    }
+}
+
+- (UIEdgeInsets)insetForSection:(NSUInteger)section {
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
+        return
+        [self.delegate collectionView:self.collectionView
+                               layout:self
+               insetForSectionAtIndex:section];
+    } else {
+        return self.sectionInset;
+    }
+}
+
+- (CGFloat)lineSpacingForSection:(NSUInteger)section {
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:minimumLineSpacingForSectionAtIndex:)]) {
+        return
+        [self.delegate collectionView:self.collectionView
+                               layout:self
+  minimumLineSpacingForSectionAtIndex:section];
+    } else {
+        return self.minimumLineSpacing;
+    }
+}
+
+- (CGFloat)interItemSpacingForSection:(NSUInteger)section {
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:)]) {
+        return
+        [self.delegate collectionView:self.collectionView
+                               layout:self
+    minimumInteritemSpacingForSectionAtIndex:section];
+    } else {
+        return self.minimumInteritemSpacing;
+    }
 }
 
 - (NSMutableArray<UICollectionViewLayoutAttributes *> *)allItemAttributes {

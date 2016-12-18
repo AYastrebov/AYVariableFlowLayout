@@ -11,17 +11,21 @@
 @protocol AYVariableDelegateFlowLayout <UICollectionViewDelegate>
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout heightForHeaderInSection:(NSInteger)section;
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout heightForFooterInSection:(NSInteger)section;
-
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout verticalPaddingForSectionAtIndex:(NSInteger)section;
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout horizontalPaddingForSectionAtIndex:(NSInteger)section;
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section;
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section;
 
 @end
 
 @interface AYVariableFlowLayout : UICollectionViewLayout
+
+@property (nonatomic) CGFloat minimumLineSpacing;
+@property (nonatomic) CGFloat minimumInteritemSpacing;
+@property (nonatomic) CGSize itemSize;
+@property (nonatomic) CGSize headerReferenceSize;
+@property (nonatomic) CGSize footerReferenceSize;
+@property (nonatomic) UIEdgeInsets sectionInset;
 
 @end
