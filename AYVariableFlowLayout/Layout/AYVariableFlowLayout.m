@@ -80,6 +80,11 @@ static const NSInteger unionSize = 20;
                                    layout:self
        horizontalPaddingForSectionAtIndex:section];
             
+            UIEdgeInsets sectionInsets =
+            [self.delegate collectionView:self.collectionView
+                                   layout:self
+                   insetForSectionAtIndex:section];
+            
             CGFloat headerHeight =
             [self.delegate collectionView:self.collectionView
                                    layout:self
@@ -90,6 +95,7 @@ static const NSInteger unionSize = 20;
                                                                                                                               withIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
                 attributes.frame = CGRectMake(0, yOffset, cvWidth, headerHeight);
                 yOffset += headerHeight;
+                yOffset += sectionInsets.top;
                 
                 [self.allItemAttributes addObject:attributes];
             }
@@ -100,7 +106,7 @@ static const NSInteger unionSize = 20;
             for (NSUInteger item = 0; item < items; item++) {
                 
                 if (item == 0) {
-                    xOffset = horizontalPadding;
+                    xOffset = sectionInsets.left;
                 }
                 
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
@@ -110,8 +116,8 @@ static const NSInteger unionSize = 20;
                                        layout:self
                        sizeForItemAtIndexPath:indexPath];
                 
-                if (xOffset + size.width > cvWidth) {
-                    xOffset = horizontalPadding;
+                if (xOffset + size.width > cvWidth - sectionInsets.right) {
+                    xOffset = sectionInsets.left;
                     
                     if (item != 0) {
                         yOffset += size.height;
@@ -146,6 +152,7 @@ static const NSInteger unionSize = 20;
             if (footerHeight > 0) {
                 UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter
                                                                                                                               withIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
+                yOffset += sectionInsets.bottom;
                 attributes.frame = CGRectMake(0, yOffset, cvWidth, footerHeight);
                 yOffset += footerHeight;
                 
