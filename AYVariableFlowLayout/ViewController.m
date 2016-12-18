@@ -47,6 +47,8 @@
         self.flowLayout = (UICollectionViewFlowLayout *)currentLayout;
         self.variableLayout = [[AYVariableFlowLayout alloc] init];
     }
+    
+    self.variableLayout.shouldDistributeViews = YES;
 }
 
 
@@ -94,7 +96,7 @@
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 3;
+    return 1;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {

@@ -27,5 +27,6 @@
 @property (nonatomic) CGSize headerReferenceSize;
 @property (nonatomic) CGSize footerReferenceSize;
 @property (nonatomic) UIEdgeInsets sectionInset;
+@property (nonatomic) BOOL shouldDistributeViews; //Default is NO. Item spacing is fixed. If YES, then acts like flowLayout
 
 @end

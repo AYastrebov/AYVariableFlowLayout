@@ -39,6 +39,7 @@ static const NSInteger unionSize = 20;
 #pragma mark - Init
 
 - (void)commonInit {
+    self.shouldDistributeViews = NO;
 }
 
 - (instancetype)init {
@@ -124,23 +125,9 @@ static const NSInteger unionSize = 20;
                     itemMaxHeight = 0;
                     rowIndex = 0;
                     
-                    NSArray<AYVariableLayoutAttributes *> *previousRowItems = [self itemsForRow:row - 1 allItems:itemAttributes];
-                    
-                    CGFloat maxX = [[previousRowItems valueForKeyPath:@"@max.maxX"] floatValue];
-                    CGFloat diff = cvWidth - sectionInsets.right - maxX;
-                    
-                    CGFloat extraMarginPerItem = diff / (previousRowItems.count - 1);
-                    
-                    if (extraMarginPerItem > 0) {
-                        [previousRowItems enumerateObjectsUsingBlock:^(AYVariableLayoutAttributes * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                            if (idx > 0) {
-                                CGRect frame = obj.frame;
-                                frame.origin.x += extraMarginPerItem * idx;
-                                obj.frame = frame;
-                                obj.maxX = CGRectGetMaxX(frame);
-                            }
-                        }];
-                    }
+                    NSArray<AYVariableLayoutAttributes *> *previousRowItems = self.shouldDistributeViews ?
+                    [self distributeItems:itemAttributes offset:sectionInsets.right row:row - 1] :
+                    [self itemsForRow:row - 1 allItems:itemAttributes];
                     
                     CGFloat minHeight = [[previousRowItems valueForKeyPath:@"@min.height"] floatValue];
                     
@@ -154,8 +141,6 @@ static const NSInteger unionSize = 20;
                 
                 [previousRowItems enumerateObjectsUsingBlock:^(AYVariableLayoutAttributes *obj, NSUInteger idx, BOOL *stop) {
                     if (CGRectIntersectsRect(obj.frame, frame)) {
-                        
-                        NSLog(@"Item index: %lu", (unsigned long)item);
                         // First, try to move it right
                         CGFloat newOffset = CGRectGetMaxX(obj.frame);
                         newOffset += horizontalPadding;
@@ -166,6 +151,11 @@ static const NSInteger unionSize = 20;
                             row++;
                             itemMaxHeight = 0;
                             rowIndex = 0;
+                            
+                            if (self.shouldDistributeViews && idx > 0) {
+                                CGFloat distributeOffset = cvWidth - CGRectGetMaxX(previousRowItems[idx - 1].frame);
+                                [self distributeItems:itemAttributes offset:distributeOffset row:row - 1];
+                            }
                             
                             yOffset += size.height;
                             yOffset += verticalPadding;
@@ -305,6 +295,33 @@ static const NSInteger unionSize = 20;
         return YES;
     }
     return NO;
+}
+
+- (NSArray<AYVariableLayoutAttributes *> *)distributeItems:(NSArray<AYVariableLayoutAttributes *> *)itemAttributes
+                                                    offset:(CGFloat)offset
+                                                       row:(NSUInteger)row {
+    
+    CGFloat cvWidth = self.collectionView.bounds.size.width;
+    
+    NSArray<AYVariableLayoutAttributes *> *previousRowItems = [self itemsForRow:row allItems:itemAttributes];
+    
+    CGFloat maxX = [[previousRowItems valueForKeyPath:@"@max.maxX"] floatValue];
+    CGFloat diff = cvWidth - offset - maxX;
+    
+    CGFloat extraMarginPerItem = diff / (previousRowItems.count - 1);
+    
+    if (extraMarginPerItem > 0) {
+        [previousRowItems enumerateObjectsUsingBlock:^(AYVariableLayoutAttributes * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (idx > 0) {
+                CGRect frame = obj.frame;
+                frame.origin.x += extraMarginPerItem * idx;
+                obj.frame = frame;
+                obj.maxX = CGRectGetMaxX(frame);
+            }
+        }];
+    }
+    
+    return previousRowItems;
 }
 
 #pragma mark - Private Accessors
