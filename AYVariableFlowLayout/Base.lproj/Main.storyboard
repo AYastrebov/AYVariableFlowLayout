@@ -78,8 +78,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="ajb-Sa-2BA">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" title="Test" id="5LJ-Zq-fKX">
+                            <connections>
+                                <action selector="testButtonPressed:" destination="BYZ-38-t0r" id="Iam-EH-xzr"/>
+                            </connections>
+                        </barButtonItem>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="ixJ-nF-lqI">
-                            <rect key="frame" x="113" y="7" width="150" height="30"/>
+                            <rect key="frame" x="112.5" y="7" width="150" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Variable"/>

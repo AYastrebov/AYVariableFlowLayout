@@ -29,14 +29,7 @@
     
     self.sizes = [NSMutableArray new];
     
-    for (NSUInteger i = 0; i < 32; i++) {
-        CGSize size = CGSizeMake(50, 50);
-        if (i == 4) {
-            size = CGSizeMake(110, 110);
-        }
-        
-        [self.sizes addObject:[NSValue valueWithCGSize:size]];
-    }
+    [self makeData];
     
     UICollectionViewLayout *currentLayout = self.collectionView.collectionViewLayout;
     
@@ -51,10 +44,17 @@
     self.variableLayout.shouldDistributeViews = YES;
 }
 
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)makeData {
+    [self.sizes removeAllObjects];
+    for (NSUInteger i = 0; i < 32; i++) {
+        CGSize size = CGSizeMake(50, 50);
+        [self.sizes addObject:[NSValue valueWithCGSize:size]];
+    }
 }
 
 - (IBAction)segmentValueChanged:(UISegmentedControl *)sender {
@@ -78,6 +78,18 @@
 
 - (IBAction)reloadButtonPressed:(id)sender {
     [self.collectionView reloadData];
+}
+
+- (IBAction)testButtonPressed:(id)sender {
+        
+    [self.collectionView.collectionViewLayout invalidateLayout];
+    
+    [self.collectionView performBatchUpdates:^{
+        [self makeData];
+        NSUInteger r = arc4random() % self.sizes.count;
+        CGSize size = CGSizeMake(110, 110);
+        [self.sizes replaceObjectAtIndex:r withObject:[NSValue valueWithCGSize:size]];
+    } completion:nil];
 }
 
 #pragma mark - UICollectionViewDataSource
